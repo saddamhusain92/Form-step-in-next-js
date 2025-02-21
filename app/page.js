@@ -52,6 +52,7 @@ export default function Home() {
         <p className="logo font-extrabold text-white text-3xl">Traya.</p>
         <p className="text-white">This hair test is co-created with experts</p>
       </header>
+      
      {/* controll tab */}
      <div className="flex justify-between w-3/6 px-4 h-20 items-center ">
       <div className="prv">
@@ -71,9 +72,9 @@ export default function Home() {
         {steps.map((step, index) => (
           <div
             key={index}
-            className={`w-full sm:py-4 sm:px-5  sm:mx-1 xs:mx-1 rounded-md bg-gray-200 text-gray-900 rounded-md bg-gray-200 text-gray-900 ${index === currentStep ? "bg-[#9BBA70] text-white" : ""}`}
+            className={` ${index == currentStep ? "w-full sm:py-4 sm:px-5  sm:mx-1 xs:mx-1 rounded-md bg-[#9BBA70] text-white" : "w-full sm:py-4 sm:px-5  sm:mx-1 xs:mx-1 rounded-md bg-gray-200 text-gray-900 rounded-md bg-gray-200 text-gray-900"}`}
           >
-            {step.title}
+            {step.title} 
           </div>
         ))}
       </div>
