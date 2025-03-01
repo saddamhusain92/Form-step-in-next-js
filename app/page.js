@@ -1,6 +1,11 @@
 "use client"
 import { useState } from "react";
-
+import hairloss1 from './assets/image_m_1 (1).webp';
+import hairloss2 from './assets/image_m_1 (2).webp';
+import hairloss3 from './assets/image_m_1 (3).webp';
+import hairloss4 from './assets/image_m_1.webp';
+import hairloss5 from './assets/image_m_2 (1).webp';
+import hairloss6 from './assets/image_m_2.webp';
 export default function Home() {
   const [currentStep, setCurrentStep] = useState(0);
   const [currentField, setCurrentField] = useState(0);
@@ -15,35 +20,78 @@ export default function Home() {
     weight: "",
     phone: "",
     address: "",
-    scalpPhoto: null
+    hairLossType: "",
+    scalpPhoto: null,
+    sleepQuality: "" // Add this line
   });
 
   const steps = [
     { 
       title: "About You", 
       fields: [
+   
+        { question: "What's your name?", placeholder: "Enter your name", key: "name" },
+        { question: "What's your gender?", placeholder: "Select gender", key: "gender" },
+        { question: "What's your phone number?", placeholder: "Enter phone number", key: "phone" },
         { question: "What's your email?", placeholder: "Enter your email", key: "email" },
-        { question: "What's your name?", placeholder: "Enter your name", key: "name" }
+      
       ]
     },
     { 
       title: "Hair Health", 
       fields: [
         { question: "How old are you?", placeholder: "Enter your age", key: "age" },
-        { question: "What's your height?", placeholder: "Enter height in cm", key: "height" }
+        { 
+          question: "Which image best describes your hair loss?", 
+          key: "hairLossType",
+          options: [
+            { value: "type1", image: hairloss1, label: "Receding hairline" },
+            { value: "type2", image: hairloss2, label: "Crown thinning" },
+            { value: "type3", image: hairloss3, label: "Overall thinning" },
+            { value: "type4", image: hairloss4, label: "Patchy hair loss" },
+            { value: "type5", image: hairloss5, label: "Complete baldness" },
+            { value: "type6", image: hairloss6, label: "Diffuse thinning" }
+          ]
+        }
       ]
     },
     { 
       title: "Your Lifestyle", 
       fields: [
-        { question: "What's your gender?", placeholder: "Select gender", key: "gender" },
-        { question: "What's your weight?", placeholder: "Enter weight in kg", key: "weight" }
+      
+        // { question: "What's your weight?", placeholder: "Enter weight in kg", key: "weight" },
+        { 
+          question: "How well do you sleep?",
+          key: "sleepQuality",
+          type: "radio",
+          options: [
+            { value: "good", label: "Good (7-9 hours of sound sleep)", id: "sleep-good" },
+            { value: "moderate", label: "Moderate (5-7 hours)", id: "sleep-moderate" },
+            { value: "poor", label: "Poor (Less than 5 hours)", id: "sleep-poor" }
+          ],
+          renderInput: (field, handleChange, formData) => (
+            <div className="custom-radio-group mt-4">
+              {field.options.map((option) => (
+                <label key={option.id} className="custom-radio px-4">
+                  <input
+                    type="radio"
+                    name="sleepQuality"
+                    id={option.id}
+                    value={option.value}
+                    checked={formData.sleepQuality === option.value}
+                    onChange={(e) => handleChange(e, field.key)}
+                  />
+                  {option.label}
+                </label>
+              ))}
+            </div>
+          )
+        }
       ]
     },
     { 
       title: "Scalp Assessment", 
       fields: [
-        { question: "What's your phone number?", placeholder: "Enter phone number", key: "phone" },
         { question: "Upload scalp photo which will be used by doctor after you purchase the plan", placeholder: "Upload photo", key: "scalpPhoto" }
       ]
     }
@@ -155,20 +203,70 @@ export default function Home() {
                     value="Male" 
                     onChange={(e) => handleChange(e, field.key)}
                   />
-                  <span></span>
                   Male
                 </label>
-                <label className="custom-radio">
+                <label className="custom-radio px-4">
                   <input 
                     type="radio" 
                     name="gender" 
                     value="Female" 
-                    className="w-full p-2 border-b mt-24 rounded-sm focus:border-[#9BBA70] focus:outline-none"
                     onChange={(e) => handleChange(e, field.key)}
                   />
-                  <span></span>
                   Female
                 </label>
+              </div>
+            ) : field.key === "hairLossType" ? (
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                {field.options.map((option, idx) => (
+                  <label 
+                    key={idx} 
+                    className={`flex flex-col items-center p-4 border rounded-lg cursor-pointer hover:border-[#9BBA70] transition-all ${
+                      formData.hairLossType === option.value ? 'bg-gray-100 border-[#9BBA70] border-2 shadow-md' : ''
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="hairLossType"
+                      value={option.value}
+                      className="hidden"
+                      onChange={(e) => handleChange(e, field.key)}
+                    />
+                    <img src={option.image.src} alt={option.label} className="w-[50px] h-[50px] object-cover mb-2" />
+                    {/* <span className="text-center">{option.label}</span> */}
+                    <span className={`text-center ${formData.hairLossType === option.value ? 'font-semibold text-[#414042]' : ''}`}>
+                      {option.label}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            ) : field.key === "sleepQuality" ? (
+              <div className="flex flex-col gap-4 mt-8">
+                {field.options.map((option) => (
+                  <label key={option.id} className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="sleepQuality"
+                      value={option.value}
+                      checked={formData.sleepQuality === option.value}
+                      onChange={(e) => handleChange(e, field.key)}
+                      className="hidden"
+                    />
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mr-3 ${
+                      formData.sleepQuality === option.value 
+                        ? 'border-[#9BBA70]' 
+                        : 'border-gray-300'
+                    }`}>
+                      {formData.sleepQuality === option.value && (
+                        <div className="w-3 h-3 rounded-full bg-[#9BBA70]"></div>
+                      )}
+                    </div>
+                    <span className={`${
+                      formData.sleepQuality === option.value 
+                        ? 'text-[#414042] font-semibold' 
+                        : 'text-gray-600'
+                    }`}>{option.label}</span>
+                  </label>
+                ))}
               </div>
             ) : field.key === "scalpPhoto" ? (
               <div className="flex flex-col items-center">
