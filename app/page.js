@@ -5,6 +5,7 @@ export default function Home() {
   const [currentStep, setCurrentStep] = useState(0);
   const [currentField, setCurrentField] = useState(0);
   const [currentPer, setCurrentPer] = useState(0);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -13,7 +14,8 @@ export default function Home() {
     gender: "",
     weight: "",
     phone: "",
-    address: ""
+    address: "",
+    scalpPhoto: null
   });
 
   const steps = [
@@ -42,7 +44,7 @@ export default function Home() {
       title: "Scalp Assessment", 
       fields: [
         { question: "What's your phone number?", placeholder: "Enter phone number", key: "phone" },
-        { question: "What's your address?", placeholder: "Enter address", key: "address" }
+        { question: "Upload scalp photo which will be used by doctor after you purchase the plan", placeholder: "Upload photo", key: "scalpPhoto" }
       ]
     }
   ];
@@ -50,12 +52,29 @@ export default function Home() {
   const progressPercentage = ((currentPer / (steps.length * 2)) * 100).toFixed(0);
 
   const handleChange = (e, key) => {
-    setFormData({ ...formData, [key]: e.target.value });
+    if (key === "scalpPhoto") {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setSelectedImage(reader.result);
+          setFormData({ ...formData, [key]: file });
+        };
+        reader.readAsDataURL(file);
+      }
+    } else {
+      setFormData({ ...formData, [key]: e.target.value });
+    }
   };
 
   const handleNext = () => {
     const currentFields = [steps[currentStep].fields[currentField]];
-    const isFieldEmpty = currentFields.some(field => formData[field.key].trim() === "");
+    const isFieldEmpty = currentFields.some(field => {
+      if (field.key === "scalpPhoto") {
+        return !formData[field.key];
+      }
+      return formData[field.key].trim() === "";
+    });
     
     if (isFieldEmpty) return;
     
@@ -144,17 +163,42 @@ export default function Home() {
                     type="radio" 
                     name="gender" 
                     value="Female" 
-                     className="w-full p-2 border-b mt-24 rounded-sm focus:border-[#9BBA70] focus:outline-none"
+                    className="w-full p-2 border-b mt-24 rounded-sm focus:border-[#9BBA70] focus:outline-none"
                     onChange={(e) => handleChange(e, field.key)}
                   />
                   <span></span>
                   Female
                 </label>
               </div>
+            ) : field.key === "scalpPhoto" ? (
+              <div className="flex flex-col items-center">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  id="scalpPhoto"
+                  onChange={(e) => handleChange(e, field.key)}
+                />
+                <label 
+                  htmlFor="scalpPhoto"
+                  className="cursor-pointer bg-[#9BBA70] text-white px-4 py-2 rounded-md"
+                >
+                  Choose Photo
+                </label>
+                {selectedImage && (
+                  <div className="mt-4 w-48 h-48">
+                    <img 
+                      src={selectedImage} 
+                      alt="Selected scalp" 
+                      className="w-full h-full object-cover rounded-md"
+                    />
+                  </div>
+                )}
+              </div>
             ) : (
               <input
                 type="text"
-                 className="w-full p-2 border-b  mt-24 rounded-sm focus:border-[#9BBA70] focus:outline-none"
+                className="w-full p-2 border-b mt-24 rounded-sm focus:border-[#9BBA70] focus:outline-none"
                 placeholder={field.placeholder}
                 value={formData[field.key]}
                 onChange={(e) => handleChange(e, field.key)}
@@ -167,11 +211,21 @@ export default function Home() {
           <button 
             onClick={handleNext}
             className={`w-1/2 p-2 py-4 bg-[#414042] text-white rounded-md ${
-              [steps[currentStep].fields[currentField]].some(field => formData[field.key].trim() === "") 
+              [steps[currentStep].fields[currentField]].some(field => {
+                if (field.key === "scalpPhoto") {
+                  return !formData[field.key];
+                }
+                return formData[field.key].trim() === "";
+              })
                 ? 'cursor-not-allowed' 
                 : ''
             }`}
-            disabled={[steps[currentStep].fields[currentField]].some(field => formData[field.key].trim() === "")}
+            disabled={[steps[currentStep].fields[currentField]].some(field => {
+              if (field.key === "scalpPhoto") {
+                return !formData[field.key];
+              }
+              return formData[field.key].trim() === "";
+            })}
           >
             {currentStep === steps.length - 1 && currentField === steps[currentStep].fields.length - 1 ? "SUBMIT" : "NEXT →"}
           </button>
