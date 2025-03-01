@@ -39,7 +39,7 @@ export default function Home() {
       ]
     },
     { 
-      title: "Scalp Assessment", 
+      title: "Contact Info", 
       fields: [
         { question: "What's your phone number?", placeholder: "Enter phone number", key: "phone" },
         { question: "What's your address?", placeholder: "Enter address", key: "address" }
@@ -86,7 +86,7 @@ export default function Home() {
   return (
     <div className="flex flex-col justify-center items-center h-full w-full">
       <header className="w-full h-[7rem] bg-[#414042] px-3 py-5">
-        <p className="logo font-extrabold text-white text-3xl">Grorootzmd</p>
+        <p className="logo font-extrabold text-white text-3xl">Traya.</p>
         <p className="text-white">This hair test is co-created with experts</p>
       </header>
       
