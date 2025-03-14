@@ -324,13 +324,13 @@ export default function Home() {
         </div>
       </div>
 
-      <div className=" bg-slate-50 flex w-3/6 justify-center gap-3">
+      <div className=" bg-slate-50 flex sm:w-3/6 w-full justify-center gap-3">
         {steps.map((step, index) => (
           <div
             key={index}
             className={`${index === currentStep ? "w-full sm:py-4 sm:px-5 sm:mx-1 xs:mx-1 rounded-md bg-[#9BBA70] text-white" : "w-full sm:py-4 sm:px-5 sm:mx-1 xs:mx-1 rounded-md bg-gray-200 text-gray-900"}`}
           >
-            <p className="sm:text-md text-sm">{step.title}</p>
+            <p className="sm:text-md p-2 text-sm">{step.title}</p>
           </div>
         ))}
       </div>
