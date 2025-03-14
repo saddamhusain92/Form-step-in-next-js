@@ -11,6 +11,7 @@ export default function Home() {
   const [currentField, setCurrentField] = useState(0);
   const [currentPer, setCurrentPer] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // Add to formData state initialization
   const [formData, setFormData] = useState({
     email: "",
@@ -276,8 +277,15 @@ export default function Home() {
         alert("Please fill all fields correctly before submitting");
         return;
       }
-  
-      alert("Thank you! Here is your submitted data:\n" + JSON.stringify(formData, null, 2));
+      setIsSubmitting(true);
+      const redirectTimer = setTimeout(() => {
+        window.location.href = '/load';
+      }, 1000);
+      return () => {
+        clearTimeout(redirectTimer);
+        setIsSubmitting(false);
+      };
+      // alert("Thank you! Here is your submitted data:\n" + JSON.stringify(formData, null, 2));
     }
   };
 
@@ -559,14 +567,21 @@ export default function Home() {
         <div className="button-group mt-10 flex items-center justify-center">
         <button 
   onClick={handleNext}
-  className={`w-1/2 p-2 py-4 bg-[#414042] text-white rounded-md ${
+  className={`w-1/2 p-2 py-4 bg-[#414042] text-white rounded-md relative overflow-hidden ${
     validationErrors[steps[currentStep].fields[currentField].key]
       ? 'opacity-50 cursor-not-allowed' 
       : ''
   }`}
-  disabled={!!validationErrors[steps[currentStep].fields[currentField].key]}
+  disabled={!!validationErrors[steps[currentStep].fields[currentField].key] || isSubmitting}
 >
-  {currentStep === steps.length - 1 && currentField === steps[currentStep].fields.length - 1 ? "SUBMIT" : "NEXT →"}
+  {isSubmitting ? (
+    <div className="flex items-center justify-center">
+      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+      Submitting...
+    </div>
+  ) : (
+    currentStep === steps.length - 1 && currentField === steps[currentStep].fields.length - 1 ? "SUBMIT" : "NEXT →"
+  )}
 </button>
         </div>
          <div className="text-center text-gray-500">
