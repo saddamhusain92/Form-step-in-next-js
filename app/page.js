@@ -324,7 +324,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className=" bg-slate-50 flex justify-center gap-3">
+      <div className=" bg-slate-50 flex w-3/6 justify-center gap-3">
         {steps.map((step, index) => (
           <div
             key={index}
