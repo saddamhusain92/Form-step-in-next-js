@@ -297,7 +297,7 @@ export default function Home() {
   return (
     <div className="flex flex-col justify-center items-center h-full w-full">
       <header className="w-full h-[7rem] bg-[#414042] px-3 py-5">
-        <p className="logo font-extrabold text-white text-3xl">Test Hair</p>
+        <p className="logo font-extrabold text-white text-3xl"> Groroot . </p>
         <p className="text-white">This hair test is co-created with experts</p>
       </header>
       
