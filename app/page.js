@@ -550,7 +550,7 @@ export default function Home() {
               <div>
               <input
                 type="text"
-                className={`w-full p-2 border-b mt-24 rounded-sm focus:border-[#9BBA70] focus:outline-none 
+                className={`w-full p-2 border-b text-gray-800 mt-24 rounded-sm focus:border-[#9BBA70] focus:outline-none 
                 }`}
                 placeholder={field.placeholder}
                 value={formData[field.key]}

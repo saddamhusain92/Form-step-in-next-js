@@ -1,11 +1,11 @@
 'use client'
-
+import hairLogo from '../assets/hairlogo.webp'
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
 export default function LoadingPage() {
   const [step, setStep] = useState(1);
-
+ 
   useEffect(() => {
     const timer1 = setTimeout(() => setStep(2), 2000);
     const timer2 = setTimeout(() => setStep(3), 4000);
@@ -38,20 +38,9 @@ export default function LoadingPage() {
       </header>
       <div className="min-h-screen flex flex-col items-center justify-center bg-white">
       <div className="mb-8">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 360],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="w-16 h-16 border-4 border-[#9BBA70] rounded-full border-t-transparent"
-        />
+    <img src="/hairlogo.webp" alt="Groroot Logo" className="h-28 mr-3" />
       </div>
-      
+    
       <h2 className="text-xl font-semibold mb-6">Customising your plan...</h2>
       
       <div className="space-y-4 w-64">
