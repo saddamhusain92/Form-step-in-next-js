@@ -12,22 +12,25 @@ export default function Home() {
   const [currentPer, setCurrentPer] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // Add to formData state initialization
+  // Update formData state to include new fields
   const [formData, setFormData] = useState({
     email: "",
     name: "",
     age: "",
-    height: "",
     gender: "",
-    weight: "",
     phone: "",
     address: "",
     hairLossType: "",
     scalpPhoto: null,
     sleepQuality: "",
+    stressLevel:"",
     familyHistory: "",
-    healthIssues: "", // Add this line
+    healthIssues: "",
+    digestiveIssues: "",
+    exerciseFrequency: "",
+    smokingHabit: "", // Add this line
   });
+  // Update validationErrors state to include new fields
   const [validationErrors, setValidationErrors] = useState({
     name: "",
     phone: "",
@@ -39,6 +42,10 @@ export default function Home() {
     healthIssues: "",
     sleepQuality: "",
     scalpPhoto: "",
+    stressLevel:"",
+    digestiveIssues: "",
+    exerciseFrequency: "",
+    smokingHabit: "",
   });
   const steps = [
     { 
@@ -171,6 +178,115 @@ export default function Home() {
               ))}
             </div>
           )
+        },
+        { 
+          question: "How stressed are you?",
+          key: "stressLevel",
+          type: "radio",
+          options: [
+            { value: "none", label: "None", id: "none" },
+            { value: "low", label: "Low", id: "low" },
+            { value: "moderate", label: "Moderate(work, family etc )", id: "mid" },
+            { value: "high", label: "High (Loss of close one, separation, home, illness)", id: "highx" },
+          ],
+          renderInput: (field, handleChange, formData) => (
+            <div className="custom-radio-group mt-4">
+              {field.options.map((option) => (
+                <label key={option.id} className="custom-radio px-4">
+                  <input
+                    type="radio"
+                    name="stressLevel"
+                    id={option.id}
+                    value={option.value}
+                    checked={formData.stressLevel === option.value}
+                    onChange={(e) => handleChange(e, field.key)}
+                  />
+                  {option.label}
+                </label>
+              ))}
+            </div>
+          )
+        },
+        { 
+          question: "Do you have Gas, Acidity or Bloating?",
+          key: "digestiveIssues",
+          type: "radio",
+          options: [
+            { value: "yes", label: "Yes", id: "digestive-yes" },
+            { value: "no", label: "No", id: "digestive-no" }
+          ],
+          renderInput: (field, handleChange, formData) => (
+            <div className="custom-radio-group mt-4">
+              {field.options.map((option) => (
+                <label key={option.id} className="custom-radio px-4">
+                  <input
+                    type="radio"
+                    name="digestiveIssues"
+                    id={option.id}
+                    value={option.value}
+                    checked={formData.digestiveIssues === option.value}
+                    onChange={(e) => handleChange(e, field.key)}
+                  />
+                  {option.label}
+                </label>
+              ))}
+            </div>
+          )
+        },
+        { 
+          question: "How often do you exercise?",
+          key: "exerciseFrequency",
+          type: "radio",
+          options: [
+            { value: "regular", label: "Regular (3-5 times a week)", id: "exercise-regular" },
+            { value: "occasional", label: "Occasional (1-2 times a week)", id: "exercise-occasional" },
+            { value: "rarely", label: "Rarely (Few times a month)", id: "exercise-rarely" },
+            { value: "never", label: "Never", id: "exercise-never" }
+          ],
+          renderInput: (field, handleChange, formData) => (
+            <div className="custom-radio-group mt-4">
+              {field.options.map((option) => (
+                <label key={option.id} className="custom-radio px-4">
+                  <input
+                    type="radio"
+                    name="exerciseFrequency"
+                    id={option.id}
+                    value={option.value}
+                    checked={formData.exerciseFrequency === option.value}
+                    onChange={(e) => handleChange(e, field.key)}
+                  />
+                  {option.label}
+                </label>
+              ))}
+            </div>
+          )
+        },
+        { 
+          question: "Do you smoke?",
+          key: "smokingHabit",
+          type: "radio",
+          options: [
+            { value: "non-smoker", label: "Non-smoker", id: "smoke-no" },
+            { value: "occasional", label: "Occasional smoker", id: "smoke-occasional" },
+            { value: "regular", label: "Regular smoker", id: "smoke-regular" }
+          ],
+          renderInput: (field, handleChange, formData) => (
+            <div className="custom-radio-group mt-4">
+              {field.options.map((option) => (
+                <label key={option.id} className="custom-radio px-4">
+                  <input
+                    type="radio"
+                    name="smokingHabit"
+                    id={option.id}
+                    value={option.value}
+                    checked={formData.smokingHabit === option.value}
+                    onChange={(e) => handleChange(e, field.key)}
+                  />
+                  {option.label}
+                </label>
+              ))}
+            </div>
+          )
         }
       ]
     },
@@ -202,6 +318,14 @@ export default function Home() {
         return !value ? "Please select your health condition" : "";
       case "sleepQuality":
         return !value ? "Please select your sleep quality" : "";
+      case "stressLevel":
+        return !value ? "Please select your sleep quality" : "";
+        case "digestiveIssues":
+          return !value ? "Please select an option" : "";
+        case "exerciseFrequency":
+          return !value ? "Please select your exercise frequency" : "";
+        case "smokingHabit":
+          return !value ? "Please select your smoking habit" : "";
       case "scalpPhoto":
         return !value ? "Please upload a scalp photo" : "";
       default:
@@ -521,7 +645,123 @@ export default function Home() {
                   </label>
                 ))}
               </div>
-            ) : field.key === "scalpPhoto" ? (
+            ):field.key === "stressLevel" ? (
+              <div className="flex flex-col gap-4 mt-8">
+                {field.options.map((option) => (
+                  <label key={option.id} className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="stressLevel"
+                      value={option.value}
+                      checked={formData.stressLevel === option.value}
+                      onChange={(e) => handleChange(e, field.key)}
+                      className="hidden"
+                    />
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mr-3 ${
+                      formData.stressLevel === option.value 
+                        ? 'border-[#9BBA70]' 
+                        : 'border-gray-300'
+                    }`}>
+                      {formData.stressLevel === option.value && (
+                        <div className="w-3 h-3 rounded-full bg-[#9BBA70]"></div>
+                      )}
+                    </div>
+                    <span className={`${
+                      formData.stressLevel === option.value 
+                        ? 'text-[#414042] font-semibold' 
+                        : 'text-gray-600'
+                    }`}>{option.label}</span>
+                  </label>
+                ))}
+              </div>
+            ):field.key === "digestiveIssues" ? (
+              <div className="flex flex-col gap-4 mt-8">
+                {field.options.map((option) => (
+                  <label key={option.id} className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="digestiveIssues"
+                      value={option.value}
+                      checked={formData.digestiveIssues === option.value}
+                      onChange={(e) => handleChange(e, field.key)}
+                      className="hidden"
+                    />
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mr-3 ${
+                      formData.digestiveIssues === option.value 
+                        ? 'border-[#9BBA70]' 
+                        : 'border-gray-300'
+                    }`}>
+                      {formData.digestiveIssues === option.value && (
+                        <div className="w-3 h-3 rounded-full bg-[#9BBA70]"></div>
+                      )}
+                    </div>
+                    <span className={`${
+                      formData.digestiveIssues === option.value 
+                        ? 'text-[#414042] font-semibold' 
+                        : 'text-gray-600'
+                    }`}>{option.label}</span>
+                  </label>
+                ))}
+              </div>
+            ):field.key === "exerciseFrequency" ? (
+              <div className="flex flex-col gap-4 mt-8">
+                {field.options.map((option) => (
+                  <label key={option.id} className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="exerciseFrequency"
+                      value={option.value}
+                      checked={formData.exerciseFrequency === option.value}
+                      onChange={(e) => handleChange(e, field.key)}
+                      className="hidden"
+                    />
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mr-3 ${
+                      formData.exerciseFrequency === option.value 
+                        ? 'border-[#9BBA70]' 
+                        : 'border-gray-300'
+                    }`}>
+                      {formData.exerciseFrequency === option.value && (
+                        <div className="w-3 h-3 rounded-full bg-[#9BBA70]"></div>
+                      )}
+                    </div>
+                    <span className={`${
+                      formData.exerciseFrequency === option.value 
+                        ? 'text-[#414042] font-semibold' 
+                        : 'text-gray-600'
+                    }`}>{option.label}</span>
+                  </label>
+                ))}
+              </div>
+            ) :field.key === "smokingHabit" ? (
+              <div className="flex flex-col gap-4 mt-8">
+                {field.options.map((option) => (
+                  <label key={option.id} className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="smokingHabit"
+                      value={option.value}
+                      checked={formData.exerciseFrequency === option.value}
+                      onChange={(e) => handleChange(e, field.key)}
+                      className="hidden"
+                    />
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mr-3 ${
+                      formData.smokingHabit === option.value 
+                        ? 'border-[#9BBA70]' 
+                        : 'border-gray-300'
+                    }`}>
+                      {formData.smokingHabit === option.value && (
+                        <div className="w-3 h-3 rounded-full bg-[#9BBA70]"></div>
+                      )}
+                    </div>
+                    <span className={`${
+                      formData.smokingHabit === option.value 
+                        ? 'text-[#414042] font-semibold' 
+                        : 'text-gray-600'
+                    }`}>{option.label}</span>
+                  </label>
+                ))}
+              </div>
+            ): field.key === "scalpPhoto" ? (
               <div className="flex flex-col items-center">
                 <input
                   type="file"
@@ -591,3 +831,40 @@ export default function Home() {
     </div>
   );
 }
+
+// Update validateField function to include new fields
+const validateField = (key, value) => {
+  switch (key) {
+    case "name":
+      return value.length < 4 ? "Name must be at least 4 characters long" : "";
+    case "phone":
+      return !/^\d{10}$/.test(value) ? "Phone number must be 10 digits" : "";
+    case "email":
+      return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? "Please enter a valid email" : "";
+    case "age":
+      const age = parseInt(value);
+      return !age || age < 18 || age > 100 ? "Age must be between 18 and 100" : "";
+    case "gender":
+      return !value ? "Please select your gender" : "";
+    case "hairLossType":
+      return !value ? "Please select a hair loss type" : "";
+    case "familyHistory":
+      return !value ? "Please select your family history" : "";
+    case "healthIssues":
+      return !value ? "Please select your health condition" : "";
+    case "sleepQuality":
+      return !value ? "Please select your sleep quality" : "";
+    case "stressLevel":
+      return !value ? "Please select your sleep quality" : "";
+    case "scalpPhoto":
+      return !value ? "Please upload a scalp photo" : "";
+    case "digestiveIssues":
+      return !value ? "Please select an option" : "";
+    case "exerciseFrequency":
+      return !value ? "Please select your exercise frequency" : "";
+    case "smokingHabit":
+      return !value ? "Please select your smoking habit" : "";
+    default:
+      return "";
+  }
+};
