@@ -825,7 +825,7 @@ export default function Home() {
 </button>
         </div>
          <div className="text-center text-gray-500">
-         <small>*Your contact details will be used by Traya hair coach to reach out to you via call/sms/whatsapp.</small>
+         <small>*Your contact details will be used by Groroot . hair coach to reach out to you via call/sms/whatsapp.</small>
          </div>
       </div>
     </div>
